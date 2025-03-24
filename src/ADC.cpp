@@ -2,11 +2,11 @@
 #include <avr/io.h>
 
 void initADC(){
-    //Set up PF0 as input
-    DDRF &= ~(1 << DDF0);
+    //Set up PA0 as input
+    DDRA &= ~(1 << DDA0);
 
-    // Enable pull-up resisitor on PF0
-    PORTF |= (1 << PORTF0);
+    // Enable pull-up resisitor on PA0
+    PORTA |= (1 << PORTA0);
 
     // Set Vref=AVcc
     ADMUX |= (1<<REFS0);
