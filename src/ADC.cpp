@@ -11,6 +11,6 @@ void initADC(){
     // Set Vref=AVcc
     ADMUX |= (1<<REFS0);
 
-    //set prescaller to 128 and enable ADC 
+    //Set prescaller to 128 and enable ADC 
     ADCSRA |= (1<<ADPS2)|(1<<ADPS1)|(1<<ADPS0)|(1<<ADEN);
 }
