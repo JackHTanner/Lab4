@@ -17,6 +17,8 @@
 #include <avr/io.h>
 #include "switch.h"
 #include "timer.h"
+#include "PWM.h"
+
 
 
 
@@ -43,9 +45,7 @@ int main(){
 
   unsigned int i = 0;
   initTimer1();
-  initLCD();
   initSwitchPB3();
-  initLED();
   initTimer0();
   sei(); // Enable global interrupts.
   unsigned char countDown = 9;
@@ -53,7 +53,9 @@ int main(){
   while (1) {
     switch(buttonState){
       case wait_disabled:
-        delayS(1);
+        delayS(10);
+        buttonState = wait_press;
+        break;
       case wait_press:
         break;
       case debounce_press:
@@ -65,29 +67,18 @@ int main(){
       case debounce_release:
         delayUs(1);
          buttonState = wait_disabled;
-         if (speedState == SLOW) {
-          speedState = FAST;  // Change to fast blink rate
-      } else {
-        speedState = SLOW;  // Change to slow blink rate
-      }
         break;
       default:
         break;
     }
-  
-
-  // Adjust delay based on the current state (SLOW or FAST)
-  if (speedState == SLOW) {
-      delayMs(SLOW_SPEED);  // Slow blink rate (200ms)
-  } else if (speedState == FAST) {
-      delayMs(FAST_SPEED);  // Fast blink rate (100ms)
-  }
+  IncFrequency(1000);
 
   // Increment or decrement count depending on the direction
-  if (countDown != 0) {
+  if (countDown >= 0) {
       countDown--; // Count up
   } else {
       buttonState = wait_press; // Reset counter
+
   }
 
 // while loop

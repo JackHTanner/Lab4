@@ -2,9 +2,9 @@
 #define PWM_H
 
 #include <avr/io.h>
-void initPWMTimer3()
+void initPWMTimer3();
 
-
+void IncFrequency(int TOP);
 
 
 

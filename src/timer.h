@@ -7,7 +7,7 @@ Assignment: Lab 3, ECE 372
 #ifndef TIMER_H
 #define TIMER_H
 
-#include <arv/io.h>
+#include <avr/io.h>
 
 void initTimer1();
 void delayS(unsigned int delay);
