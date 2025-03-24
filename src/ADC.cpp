@@ -8,7 +8,7 @@ void initADC(){
     // Enable pull-up resisitor on PF0
     PORTF |= (1 << PORTF0);
 
-    // Select Vref=AVcc
+    // Set Vref=AVcc
     ADMUX |= (1<<REFS0);
 
     //set prescaller to 128 and enable ADC 
