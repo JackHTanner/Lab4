@@ -42,7 +42,7 @@ void initTimer1(){
     TCCR1B &= ~(1 << WGM13);
 }
 
-void delayS(unsigned int delay){
+void delayMs(unsigned int delay){
     unsigned int count = 0;
 
     //want a time delay of 1 us, so count = (Time delay * frequency of clock)/Prescalar
