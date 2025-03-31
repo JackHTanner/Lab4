@@ -1,10 +1,6 @@
 #include "ADC.h"
 #include <avr/io.h>
 
-
-#include "adc.h"
-#include <avr/io.h>
-
 void initADC(){
 
   // 1. ADC MUX register set reference voltage set to AVCC = 5V output. 
