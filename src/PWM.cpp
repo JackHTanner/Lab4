@@ -10,27 +10,27 @@
 // Use Fast PWM Mode #14 if you need more flexibilty on the frequency value.
 
 // I will have a prescaler of 1.  The calculation of OCR1A are shown below:
-void initPWMTimer1()  {
+void initPWMTimer3()  {
 
  //set header pin 11 to output
-DDRB |= (1 << DDB5);
+DDRE |= (1 << DDE4);
   // set non-inverting mode - output starts high and then is low, 
   //COM1A0 bit = 0
   //COM1A1 bit =1
-  TCCR1A |= (1 << COM1A1);
-  TCCR1A &= ~(1 << COM1A0);
+  TCCR3A |= (1 << COM3A1);
+  TCCR3A &= ~(1 << COM3A0);
 
   //  Use fast PWM mode 10 bit, top value is determined by Table 17-2 of 0x3FF (1023) 
   //  which determines the PWM frequency.
-// for Fast PWM 10bit mode # 7:
+// for Fast PWM 10bit mode # 15:
 // WGM10 =1
 // WGM11 =1
 // WGM12 = 1
 // WGM13 = 0
-TCCR1A |=  (1 << WGM10) | (1 << WGM11);
+TCCR3A |=  (1 << WGM30) | (1 << WGM31);
 
-TCCR1B |= (1 << WGM12);
-TCCR1B &= ~(1 << WGM13); 
+TCCR3B |= (1 << WGM32);
+TCCR3B |= (1 << WGM33); 
 
 // PWM frequency calculation for FAST PWM mode on page 148 of datasheet
   //frequency of PWM = (F_clk)/((Prescaler)* (1 +TOP))
@@ -45,8 +45,8 @@ TCCR1B &= ~(1 << WGM13);
 //CS10 =1
 //CS11 =0
 //CS12 =0
-TCCR1B |= (1 << CS10);
-TCCR1B &= ~((1 << CS11)  | (1 << CS12));
+TCCR3B |= (1 << CS30);
+TCCR3B &= ~((1 << CS31)  | (1 << CS32));
 
 
 // the last thing is to set the duty cycle.     
@@ -55,7 +55,9 @@ TCCR1B &= ~((1 << CS11)  | (1 << CS12));
 //  calculate OCR1A value => OCR1A = duty cycle(fractional number) * (1 + TOP) 
 // we want a duty cycle = 60%
 // OCR1A = 0.60 * 1024
- OCR1A =  255;
+ OCR3A =  1024; //100%
+
+ OCR3B = 512; //50%
 }
 
 /*void changeDutyCycle(uint16_t adcValue){

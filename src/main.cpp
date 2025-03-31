@@ -43,21 +43,12 @@ int main(){
   Serial.flush();
   initTimer1();
   initSwitchPB3();
+  initPWMTimer3();
   initTimer0();
   initSevenSegment();
   initADC();
   sei(); // Enable global interrupts.
   unsigned int countDown = 9;
-  displayDigit(9);
-  delayS(1);
-  displayDigit(8);
-  delayS(1);
-  displayDigit(7);
-  delayS(1);
-  displayDigit(6);
-  delayS(1);
-  displayDigit(5);
-  delayS(1);
 
   Serial.println("Initializing");
   while (1) {
@@ -74,6 +65,8 @@ int main(){
         break;
       case wait_press:
         sei();
+        PORTB |= (1<<PORTB6);
+        PORTB &= ~(1<<PORTB7);
         break;
       case debounce_press:
         delayUs(1);
@@ -89,8 +82,8 @@ int main(){
         break;
     }
 
-  uint16_t adcValue = readADC();
-  changeDutyCycle(adcValue);
+  //uint16_t adcValue = readADC();
+  //changeDutyCycle(adcValue);
 
   // Increment or decrement count depending on the direction
 
