@@ -5,7 +5,7 @@ void initSevenSegment() {
     // Set the DDRB to output
     DDRC |= (1 << DDC0) | (1 << DDC1) | (1 << DDC2) | (1 << DDC3) | (1 << DDC4) | (1 << DDC5) | (1 << DDC6);
     // Set the PORTC to pull up resistors
-    PORTC |= (1 << PORTC0) | (1 << PORTC1) | (1 << PORTC2) | (1 << PORTC3) | (1 << PORTC4) | (1 << PORTC5) | (1 << PORTC6) | (1<<PORTC7);
+    //PORTC |= (1 << PORTC0) | (1 << PORTC1) | (1 << PORTC2) | (1 << PORTC3) | (1 << PORTC4) | (1 << PORTC5) | (1 << PORTC6) | (1<<PORTC7);
 }
 
 void displayDigit(int digit) {

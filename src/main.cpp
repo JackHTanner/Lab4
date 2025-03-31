@@ -27,7 +27,6 @@
  */
 // typedef enum .......
 
-
 // Initialize states.  Remember to use volatile 
 
 
@@ -40,7 +39,8 @@ typedef enum stateName {
 
 
 int main(){
-
+  Serial.begin(9600);
+  Serial.flush();
   initTimer1();
   initSwitchPB3();
   initTimer0();
@@ -48,12 +48,29 @@ int main(){
   initADC();
   sei(); // Enable global interrupts.
   unsigned int countDown = 9;
+  displayDigit(9);
+  delayS(1);
+  displayDigit(8);
+  delayS(1);
+  displayDigit(7);
+  delayS(1);
+  displayDigit(6);
+  delayS(1);
+  displayDigit(5);
+  delayS(1);
 
+  Serial.println("Initializing");
   while (1) {
     switch(buttonState){
       case wait_disabled:
-        unsigned char countDown = 9;
-        //cli();
+      countDown = 9;
+        cli();
+          for (int i = countDown; i >= 0; i--){
+            displayDigit(i);
+            delayS(1);
+          }
+          sei();
+          buttonState = wait_press; // Reset counter
         break;
       case wait_press:
         sei();
@@ -72,17 +89,10 @@ int main(){
         break;
     }
 
-  //uint16_t adcValue = readADC();
-  //changeDutyCycle(adcValue);
+  uint16_t adcValue = readADC();
+  changeDutyCycle(adcValue);
 
   // Increment or decrement count depending on the direction
-  if (buttonState = wait_disabled ) {
-      for (int i = countDown; i >= 0; i--){
-        displayDigit(countDown);
-        delayS(1);
-      }
-      buttonState = wait_press; // Reset counter
-  }
 
 // while loop
 }
@@ -96,9 +106,11 @@ int main(){
 */
 ISR(PCINT0_vect){
   if(buttonState == wait_press){
+    Serial.println("Pressed");
     buttonState = debounce_press;
   }
   else if(buttonState == wait_release){
+    Serial.println("Removed finger");
     buttonState = debounce_release;
   }
 }
