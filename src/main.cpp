@@ -21,6 +21,7 @@
 #include "ADC.h"
 #include "SevenSegment.h"
 
+
 /*
  * Define a set of states that can be used in the state machine using an enum.
  */
@@ -40,19 +41,19 @@ typedef enum stateName {
 
 int main(){
 
-  unsigned int i = 0;
   initTimer1();
   initSwitchPB3();
   initTimer0();
   initSevenSegment();
   initADC();
   sei(); // Enable global interrupts.
-  unsigned char countDown = 9;
+  unsigned int countDown = 9;
 
   while (1) {
     switch(buttonState){
       case wait_disabled:
-        cli();
+        unsigned char countDown = 9;
+        //cli();
         break;
       case wait_press:
         sei();
@@ -71,17 +72,16 @@ int main(){
         break;
     }
 
-  uint16_t adcValue = readADC();
-  changeDutyCycle(adcValue);
+  //uint16_t adcValue = readADC();
+  //changeDutyCycle(adcValue);
 
   // Increment or decrement count depending on the direction
-  if (countDown >= 0) {
-      displayDigit(countDown);
-      countDown--; // Count up
-      delayS(1);
-  } else {
+  if (buttonState = wait_disabled ) {
+      for (int i = countDown; i >= 0; i--){
+        displayDigit(countDown);
+        delayS(1);
+      }
       buttonState = wait_press; // Reset counter
-
   }
 
 // while loop

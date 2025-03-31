@@ -1,7 +1,6 @@
 #include "PWM.h"
 
 #include <avr/io.h>
-#include "pwm.h"
 
 // function that produces an output PWM signal with a frequency and duty cycle. For this example
 // I am generating a PWM frequency of 15.625 kHz with a 60% duty cycle.
@@ -59,6 +58,6 @@ TCCR1B &= ~((1 << CS11)  | (1 << CS12));
  OCR1A =  255;
 }
 
-void changeDutyCycle(uint16_t adcValue){
+/*void changeDutyCycle(uint16_t adcValue){
     OCR3A = (adcValue*ICR3) / 1023;
-}
+}*/
