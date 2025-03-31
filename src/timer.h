@@ -10,7 +10,7 @@ Assignment: Lab 3, ECE 372
 #include <avr/io.h>
 
 void initTimer1();
-void delayS(unsigned int delay);
+void delayMs(unsigned int delay);
 void initTimer0();
 void delayUs(unsigned int delay); 
 
