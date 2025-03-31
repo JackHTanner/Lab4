@@ -1,4 +1,4 @@
-// Author:
+// Author: Jack Tanner, Eryc Rod, Davron, Ketar
 // Net ID:
 // Date:
 // Assignment:     Lab 4
@@ -18,9 +18,8 @@
 #include "switch.h"
 #include "timer.h"
 #include "PWM.h"
-
-
-
+#include "ADC.h"
+#include "SevenSegment.h"
 
 /*
  * Define a set of states that can be used in the state machine using an enum.
@@ -41,22 +40,22 @@ typedef enum stateName {
 
 int main(){
 
-  bool countDone = 0;
-
   unsigned int i = 0;
   initTimer1();
   initSwitchPB3();
   initTimer0();
+  initSevenSegment();
+  initADC();
   sei(); // Enable global interrupts.
   unsigned char countDown = 9;
 
   while (1) {
     switch(buttonState){
       case wait_disabled:
-        delayS(10);
-        buttonState = wait_press;
+        cli();
         break;
       case wait_press:
+        sei();
         break;
       case debounce_press:
         delayUs(1);
@@ -71,11 +70,15 @@ int main(){
       default:
         break;
     }
-  IncFrequency(1000);
+
+  uint16_t adcValue = readADC();
+  changeDutyCycle(adcValue);
 
   // Increment or decrement count depending on the direction
   if (countDown >= 0) {
+      displayDigit(countDown);
       countDown--; // Count up
+      delayS(1);
   } else {
       buttonState = wait_press; // Reset counter
 

@@ -6,8 +6,12 @@ void initPWMTimer3(){
     TCCR3B |= (1 << WGM32) | (1<<CS30);
 
     DDRH |= (1<<DDH5);
+
+    ICR3 = 39999;
+
+    OCR3A = 0;
 }
 
-void IncFrequency(int TOP){
-    OCR3A = TOP;
+void changeDutyCycle(uint16_t adcValue){
+    OCR3A = (adcValue*ICR3) / 1023;
 }

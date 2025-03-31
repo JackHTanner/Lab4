@@ -4,7 +4,7 @@
 #include <avr/io.h>
 void initPWMTimer3();
 
-void IncFrequency(int TOP);
+void changeDutyCycle(uint16_t adcValue);
 
 
 
