@@ -78,7 +78,7 @@ int main(){
   if (countDown >= 0) {
       displayDigit(countDown);
       countDown--; // Count up
-      delayMs(1);
+      delayS(1);
   } else {
       buttonState = wait_press; // Reset counter
 
