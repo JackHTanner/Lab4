@@ -9,9 +9,12 @@
  * Initializes pull-up resistor on PB3 and sets it into input mode
  */
 void initSwitchPB3(){
- DDRB &= ~(1<<DDB3); // enables input on pin 50
- PORTB |= (1<<PORTB3); // enables pull up resistor on pin 50
+ DDRD &= ~(1<<DDD0); // enables input on pin 21
+ PORTD |= (1<<PORTD0); // enables pull up resistor on pin 21
 
+
+ EICRA |= (1 << ISC00);
+ EICRA &= ~(1 << ISC01);
  PCICR |= (1 << PCIE0);
- PCMSK0 |= (1 << PCINT3);
+ EIMSK |= (1 << INT0);
 }

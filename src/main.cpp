@@ -39,6 +39,7 @@ typedef enum stateName {
 
 
 int main(){
+  // Serial monitor testing
   Serial.begin(9600);
   Serial.flush();
   initTimer1();
@@ -48,9 +49,15 @@ int main(){
   initSevenSegment();
   initADC();
   sei(); // Enable global interrupts.
+
   unsigned int countDown = 9;
+  uint16_t adcValue;
 
   Serial.println("Initializing");
+  DDRB |= (1<<DDB6);
+  DDRB |= (1<<DDB7);
+  PORTB |= (1<<PORTB6);
+  PORTB &= ~(1<<PORTB7);
   while (1) {
     switch(buttonState){
       case wait_disabled:
@@ -65,8 +72,6 @@ int main(){
         break;
       case wait_press:
         sei();
-        PORTB |= (1<<PORTB6);
-        PORTB &= ~(1<<PORTB7);
         break;
       case debounce_press:
         delayUs(1);
@@ -82,8 +87,9 @@ int main(){
         break;
     }
 
-  //uint16_t adcValue = readADC();
-  //changeDutyCycle(adcValue);
+  adcValue = readADC();
+  Serial.println(adcValue);
+  changeDutyCycle(adcValue);
 
   // Increment or decrement count depending on the direction
 
@@ -97,13 +103,13 @@ int main(){
 * change at twice the original rate. If the LEDs are already changing at twice
 * the original rate, it goes back to the original rate.
 */
-ISR(PCINT0_vect){
+ISR(INT0_vect){
   if(buttonState == wait_press){
-    Serial.println("Pressed");
+    PORTB &= ~(1<<PORTB6);
+    PORTB &= ~(1<<PORTB7);
     buttonState = debounce_press;
   }
   else if(buttonState == wait_release){
-    Serial.println("Removed finger");
     buttonState = debounce_release;
   }
 }

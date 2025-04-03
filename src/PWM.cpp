@@ -12,21 +12,21 @@
 // I will have a prescaler of 1.  The calculation of OCR1A are shown below:
 void initPWMTimer3()  {
 
- //set header pin 11 to output
-DDRE |= (1 << DDE4);
+ //set header pin 2 to output
+  DDRE |= (1 << DDE4);
   // set non-inverting mode - output starts high and then is low, 
   //COM1A0 bit = 0
   //COM1A1 bit =1
-  TCCR3A |= (1 << COM3A1);
-  TCCR3A &= ~(1 << COM3A0);
+  TCCR3A |= (1 << COM3B1);
+  TCCR3A &= ~(1 << COM3B0);
 
-  //  Use fast PWM mode 10 bit, top value is determined by Table 17-2 of 0x3FF (1023) 
+  //  Use fast PWM mode 15 bit, top value is determined by Table 17-2 of 0x3FF (1023) 
   //  which determines the PWM frequency.
 // for Fast PWM 10bit mode # 15:
 // WGM10 =1
 // WGM11 =1
 // WGM12 = 1
-// WGM13 = 0
+// WGM13 = 1
 TCCR3A |=  (1 << WGM30) | (1 << WGM31);
 
 TCCR3B |= (1 << WGM32);
@@ -55,11 +55,25 @@ TCCR3B &= ~((1 << CS31)  | (1 << CS32));
 //  calculate OCR1A value => OCR1A = duty cycle(fractional number) * (1 + TOP) 
 // we want a duty cycle = 60%
 // OCR1A = 0.60 * 1024
- OCR3A =  1024; //100%
+ OCR3A =  1023; //100%
 
- OCR3B = 512; //50%
+ OCR3B = OCR3A / 2; //50%
 }
 
-/*void changeDutyCycle(uint16_t adcValue){
-    OCR3A = (adcValue*ICR3) / 1023;
-}*/
+void changeDutyCycle(uint16_t adcValue){
+    if (adcValue > 515){
+      PORTB |= (1<<PORTB6);
+      PORTB &= ~(1<<PORTB7);
+      OCR3B = (adcValue - 512) * 2;
+    }
+    else if (adcValue < 505){
+      PORTB &= ~(1<<PORTB6);
+      PORTB |= (1<<PORTB7);
+      OCR3B = (512 - adcValue) * 2 - 1;
+    }
+    else{
+      PORTB &= ~(1<<PORTB6);
+      PORTB &= ~(1<<PORTB7);
+      OCR3B = 0;
+    }
+}

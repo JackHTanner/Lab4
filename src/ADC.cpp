@@ -13,8 +13,8 @@ void initADC(){
   // 3. Choose Analog Pin for I/P
   // Specify ADC input channel and mode
   //Set ADC7 as single-ended input with MUX[5:0] = 0b000111
-  ADMUX |= (1 << MUX2) | (1 << MUX1) | (1 << MUX0);
-  ADMUX &= ~((1 << MUX4) | (1 << MUX3));
+  // 2. Select ADC0 (A0) by clearing all MUX bits
+  ADMUX &= ~((1<<MUX4) | (1 << MUX3) | (1 << MUX2) | (1 << MUX1) | (1 << MUX0));
   ADCSRB &= ~(1 << MUX5);
 
   // 4. enable ADC and 5. enable auto-triggering
@@ -33,19 +33,19 @@ void initADC(){
   
 
   //8.  disable ADC0 pin digital input - pin A0 on board
-  DIDR0 |= (1 << ADC7D);
+  DIDR0 |= (1 << ADC0D);
 
   // 9. start the first ADC conversion
   ADCSRA |= ( 1 << ADSC);
 }
 
-uint16_t readADC(){
-    // Start conversion
-    ADCSRA |= (1 << ADSC);
-    
-    // Wait for conversion to complete
-    while (ADCSRA & (1 << ADSC));
-    
-    // Return the 10-bit ADC result
-    return ADC;
+uint16_t readADC() {
+  // Wait for conversion to complete
+  //while (!(ADCSRA & (1 << ADIF)));  // Wait for ADIF to be set
+  
+  // Clear the ADC interrupt flag by writing 1 to it
+  //ADCSRA |= (1 << ADIF);
+
+  // Return the 10-bit ADC result
+  return ADC;
 }
