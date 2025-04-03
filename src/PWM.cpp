@@ -61,12 +61,12 @@ TCCR3B &= ~((1 << CS31)  | (1 << CS32));
 }
 
 void changeDutyCycle(uint16_t adcValue){
-    if (adcValue > 515){
+    if (adcValue > 512){
       PORTB |= (1<<PORTB6);
       PORTB &= ~(1<<PORTB7);
       OCR3B = (adcValue - 512) * 2;
     }
-    else if (adcValue < 505){
+    else if (adcValue < 512){
       PORTB &= ~(1<<PORTB6);
       PORTB |= (1<<PORTB7);
       OCR3B = (512 - adcValue) * 2 - 1;
