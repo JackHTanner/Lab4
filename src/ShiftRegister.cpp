@@ -10,8 +10,8 @@ const int dataPin = 12;
 // Binary values that map to each
 // segment (a, b,..., g) of the 7seg display
 byte numbers[10] = { 
-    0b01111011, // 0
-	  0b00001001, // 1
+        0b01111011, // 0
+        0b00001001, // 1
   	0b10110011, // 2
   	0b10011011, // 3
   	0b11001001, // 4
