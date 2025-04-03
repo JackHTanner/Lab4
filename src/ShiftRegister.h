@@ -3,7 +3,7 @@
 
 byte numbers[10];
 void setup();
-void loop();
+void countdown();
 void setDisplay(byte digit);
 
 #endif
