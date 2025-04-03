@@ -31,7 +31,7 @@ void setup() {
 
 // Loop from 9 to 0, delay 1 second between
 // each iteration
-void loop() {
+void countdown() {
   for(int i = 9; i >= 0; i--) {
     delayS(1);
     setDisplay(i);
