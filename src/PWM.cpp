@@ -51,26 +51,29 @@ TCCR3B &= ~((1 << CS31)  | (1 << CS32));
 
 // the last thing is to set the duty cycle.     
 // duty cycle is set by dividing output compare OCR1A value by 1 + TOP value
-// the top value is (1 + ICR1) = 1024
-//  calculate OCR1A value => OCR1A = duty cycle(fractional number) * (1 + TOP) 
-// we want a duty cycle = 60%
-// OCR1A = 0.60 * 1024
+// the top value is (1 + OCR3A) = 1024
+//  calculate OCR3A value => OCR3A = duty cycle(fractional number) * (1 + TOP) 
  OCR3A =  1023; //100%
-
- OCR3B = OCR3A / 2; //50%
 }
 
 void changeDutyCycle(uint16_t adcValue){
+    // cw
     if (adcValue > 512){
       PORTB |= (1<<PORTB6);
       PORTB &= ~(1<<PORTB7);
       OCR3B = (adcValue - 512) * 2;
     }
+
+    //ccw
     else if (adcValue < 512){
       PORTB &= ~(1<<PORTB6);
       PORTB |= (1<<PORTB7);
-      OCR3B = (512 - adcValue) * 2 - 1;
+      OCR3B = (512 - adcValue) * 2 + 20;
+      if (OCR3B > 1023)
+        OCR3B = 1023;
     }
+
+    //0
     else{
       PORTB &= ~(1<<PORTB6);
       PORTB &= ~(1<<PORTB7);

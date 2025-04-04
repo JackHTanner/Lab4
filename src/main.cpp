@@ -19,7 +19,6 @@
 #include "timer.h"
 #include "PWM.h"
 #include "ADC.h"
-#include "SevenSegment.h"
 
 
 /*
@@ -54,19 +53,19 @@ int main(){
   uint16_t adcValue;
 
   Serial.println("Initializing");
-  DDRB |= (1<<DDB6);
-  DDRB |= (1<<DDB7);
-  PORTB |= (1<<PORTB6);
-  PORTB &= ~(1<<PORTB7);
   while (1) {
     switch(buttonState){
       case wait_disabled:
+      PORTB &= ~(1<<PORTB6);
+      PORTB &= ~(1<<PORTB7);
+      OCR3B = 0;
       countDown = 9;
         cli();
           for (int i = countDown; i >= 0; i--){
             displayDigit(i);
             delayS(1);
           }
+          displayDigit(-1);
           sei();
           buttonState = wait_press; // Reset counter
         break;
@@ -105,8 +104,6 @@ int main(){
 */
 ISR(INT0_vect){
   if(buttonState == wait_press){
-    PORTB &= ~(1<<PORTB6);
-    PORTB &= ~(1<<PORTB7);
     buttonState = debounce_press;
   }
   else if(buttonState == wait_release){

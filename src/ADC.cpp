@@ -41,10 +41,10 @@ void initADC(){
 
 uint16_t readADC() {
   // Wait for conversion to complete
-  //while (!(ADCSRA & (1 << ADIF)));  // Wait for ADIF to be set
+  while (!(ADCSRA & (1 << ADIF)));  // Wait for ADIF to be set
   
   // Clear the ADC interrupt flag by writing 1 to it
-  //ADCSRA |= (1 << ADIF);
+  ADCSRA |= (1 << ADIF);
 
   // Return the 10-bit ADC result
   return ADC;
